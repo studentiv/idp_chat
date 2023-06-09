@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "66663410785",
+    "project_id": "idpchat-61ade",
+    "storage_bucket": "idpchat-61ade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:66663410785:android:975f822bba557110d18e20",
+        "android_client_info": {
+          "package_name": "com.example.idp_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "66663410785-pvdrin5e4ai4i2dac9us1c1u3m6lccu3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6iEqDYbWcXM69whrmtfkaFmLfhyjZTvQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "66663410785-pvdrin5e4ai4i2dac9us1c1u3m6lccu3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
