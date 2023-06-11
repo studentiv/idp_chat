@@ -1,67 +1,54 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:idp_chat/pages/login/login_cubit.dart';
+import 'package:idp_chat/pages/login/login_page.dart';
+import 'package:idp_chat/pages/main/main_cubit.dart';
 
-void main() {
+import 'pages/main/main_page.dart';
+import 'pages/splash/splash_page.dart';
+import 'repository/auth_repository.dart';
+import 'repository/chat_repository.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp();
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(primarySwatch: Colors.blue),
+        home: MultiRepositoryProvider(
+          providers: [
+            RepositoryProvider.value(value: AuthRepository()),
+            RepositoryProvider.value(value: ChatRepository()),
           ],
+          child: BlocProvider(
+            create: (context) => MainCubit(),
+            child: BlocBuilder<MainCubit, MainState>(
+              builder: (context, state) {
+                if (state.loading) {
+                  return const SplashPage();
+                } else if (state.user != null) {
+                  return MainPage();
+                } else {
+                  return BlocProvider(
+                    create: (_) => LoginCubit(
+                      context.read<AuthRepository>(),
+                      context.read<ChatRepository>(),
+                    ),
+                    child: LoginPage(),
+                  );
+                }
+              },
+            ),
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
+      );
 }
