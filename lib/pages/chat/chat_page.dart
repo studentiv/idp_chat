@@ -12,6 +12,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController controller = TextEditingController();
+  final ScrollController scrollController = ScrollController();
   final FocusNode focusNode = FocusNode();
 
   @override
@@ -27,63 +28,70 @@ class _ChatPageState extends State<ChatPage> {
             title: Text(context.read<ChatCubit>().state.interlocutor.userName),
           ),
           body: BlocBuilder<ChatCubit, ChatState>(
-            buildWhen: (p, n) => p.messages.length != n.messages.length,
-            builder: (context, state) => Column(
-              children: [
-                Expanded(
-                  child: ListView(
-                    children: state.messages
-                        .map(
-                          (e) => _MessageItem(state.user.id == e.author.id, e),
-                        )
-                        .toList(),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  color: Colors.blueAccent,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                          child: TextField(
-                            focusNode: focusNode,
-                            onSubmitted: (_) => sendMessage(),
-                            textInputAction: TextInputAction.send,
-                            controller: controller,
-                            decoration: InputDecoration(
-                              filled: true,
-                              fillColor: Colors.white,
-                              hintText: 'Message',
-                              border: InputBorder.none,
-                              hintStyle:
-                                  TextStyle(fontSize: 18, color: Colors.grey),
+              buildWhen: (p, n) => p.messages.length != n.messages.length,
+              builder: (context, state) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  scrollController
+                      .jumpTo(scrollController.position.maxScrollExtent);
+                });
+                return Column(
+                  children: [
+                    Expanded(
+                      child: ListView(
+                        controller: scrollController,
+                        children: state.messages
+                            .map(
+                              (e) =>
+                                  _MessageItem(state.user.id == e.author.id, e),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      color: Colors.blueAccent,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(8),
+                              ),
+                              child: TextField(
+                                focusNode: focusNode,
+                                onSubmitted: (_) => sendMessage(),
+                                textInputAction: TextInputAction.send,
+                                controller: controller,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  hintText: 'Message',
+                                  border: InputBorder.none,
+                                  hintStyle: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Material(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8)),
-                        color: Colors.deepPurpleAccent,
-                        child: InkWell(
-                          onTap: sendMessage,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Icon(Icons.send, color: Colors.white),
+                          const SizedBox(width: 6),
+                          Material(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8)),
+                            color: Colors.deepPurpleAccent,
+                            child: InkWell(
+                              onTap: sendMessage,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12),
+                                child: Icon(Icons.send, color: Colors.white),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+                    ),
+                  ],
+                );
+              }),
         ),
       );
 
