@@ -22,16 +22,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   @override
-  Widget build(BuildContext context) => Scaffold(
-        body: BlocBuilder<LoginCubit, LoginState>(
-          builder: (context, state) => PageView(
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            controller: controller,
-            children: [
-              SignInPage(onPageChange, state.errorText),
-              SignUpPage(onPageChange, state.errorText)
-            ],
+  Widget build(BuildContext context) => SafeArea(
+        child: Scaffold(
+          body: BlocBuilder<LoginCubit, LoginState>(
+            builder: (context, state) => PageView(
+              physics: NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              controller: controller,
+              children: [
+                SignInPage(onPageChange, state.errorText, state.loading),
+                SignUpPage(onPageChange, state.errorText, state.loading)
+              ],
+            ),
           ),
         ),
       );

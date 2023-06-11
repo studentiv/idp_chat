@@ -103,7 +103,7 @@ class __$$_LoginStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_LoginState implements _LoginState {
-  const _$_LoginState({this.loading = true, this.errorText});
+  const _$_LoginState({this.loading = false, this.errorText});
 
   @override
   @JsonKey()

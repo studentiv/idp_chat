@@ -7,7 +7,7 @@ part 'message.g.dart';
 @JsonSerializable()
 class Message {
   final ChatUser author;
-  final DateTime time;
+  final int time;
   final String text;
 
   Message(this.author, this.time, this.text);

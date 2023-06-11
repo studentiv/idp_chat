@@ -8,12 +8,12 @@ part of 'message.dart';
 
 Message _$MessageFromJson(Map<String, dynamic> json) => Message(
       ChatUser.fromJson(json['author'] as Map<String, dynamic>),
-      DateTime.parse(json['time'] as String),
+      json['time'] as int,
       json['text'] as String,
     );
 
 Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'author': instance.author,
-      'time': instance.time.toIso8601String(),
+      'time': instance.time,
       'text': instance.text,
     };

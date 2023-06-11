@@ -66,15 +66,16 @@ class DefaultTextField extends StatelessWidget {
         child: TextFormField(
           onChanged: onChange,
           decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 20,
-                horizontal: 16,
-              ),
-              filled: true,
-              fillColor: Colors.grey.shade200,
-              border: InputBorder.none,
-              hintText: hintText,
-              hintStyle: TextStyle(fontSize: 18, color: Colors.grey)),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 16,
+            ),
+            filled: true,
+            fillColor: Colors.grey.shade200,
+            border: InputBorder.none,
+            hintText: hintText,
+            hintStyle: TextStyle(fontSize: 18, color: Colors.grey),
+          ),
         ),
       );
 }

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:idp_chat/models/chat_user.dart';
 
-class ChatRepository {
+class UserRepository {
   final FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   late final usersCollection = fireStore.collection('users');

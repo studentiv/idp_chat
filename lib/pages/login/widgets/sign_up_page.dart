@@ -9,8 +9,9 @@ import 'widget.dart';
 class SignUpPage extends StatefulWidget {
   final VoidCallback onPageChange;
   final String? errorText;
+  final bool loading;
 
-  const SignUpPage(this.onPageChange, this.errorText);
+  const SignUpPage(this.onPageChange, this.errorText, this.loading);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -23,83 +24,93 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) => Center(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Logo(),
-                const SizedBox(height: 50),
-                Form(
+        child: !widget.loading
+            ? SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      DefaultTextField(_onNicknameChange, 'Nickname'),
-                      const SizedBox(height: 20),
-                      DefaultTextField(_onEmailChange, 'Email'),
-                      const SizedBox(height: 20),
-                      PasswordField(_onPasswordChange),
-                      const SizedBox(height: 20),
+                      const Logo(),
+                      const SizedBox(height: 50),
+                      Form(
+                        child: Column(
+                          children: [
+                            DefaultTextField(_onNicknameChange, 'Nickname'),
+                            const SizedBox(height: 20),
+                            DefaultTextField(_onEmailChange, 'Email'),
+                            const SizedBox(height: 20),
+                            PasswordField(_onPasswordChange),
+                            const SizedBox(height: 20),
+                          ],
+                        ),
+                      ),
+                      if (widget.errorText != null)
+                        Text(
+                          widget.errorText!,
+                          style: TextStyle(fontSize: 12, color: Colors.red),
+                        ),
+                      const SizedBox(height: 10),
+                      SignButton(
+                        'Sign Up',
+                        () => signUp(
+                          context.read<LoginCubit>().signUpWithEmailAndPassword(
+                                _email,
+                                _password,
+                                _userName,
+                              ),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.grey)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: Text(
+                              'or',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            ),
+                          ),
+                          Expanded(child: Divider(color: Colors.grey)),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      FacebookLabel(
+                        'Sign Up with Facebook',
+                        () => signUp(
+                            context.read<LoginCubit>().signInWithFacebook()),
+                      ),
+                      const SizedBox(height: 15),
+                      GoogleLabel(
+                        'Sign Up with Google',
+                        () => signUp(
+                          context.read<LoginCubit>().signInWithGoogle(),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Don\'t have an account?'),
+                          TextButton(
+                            onPressed: widget.onPageChange,
+                            child: Text(
+                              'Log in',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blueAccent,
+                              ),
+                            ),
+                          )
+                        ],
+                      )
                     ],
                   ),
                 ),
-                if (widget.errorText != null)
-                  Text(
-                    widget.errorText!,
-                    style: TextStyle(fontSize: 12, color: Colors.red),
-                  ),
-                const SizedBox(height: 10),
-                SignButton(
-                  'Sign Up',
-                  () => context
-                      .read<LoginCubit>()
-                      .signUpWithEmailAndPassword(_email, _password, _userName),
-                ),
-                const SizedBox(height: 30),
-                Row(
-                  children: [
-                    Expanded(child: Divider(color: Colors.grey)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Text(
-                        'or',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
-                      ),
-                    ),
-                    Expanded(child: Divider(color: Colors.grey)),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                FacebookLabel(
-                  'Sign Up with Facebook',
-                  () => context.read<LoginCubit>().signInWithFacebook(),
-                ),
-                const SizedBox(height: 15),
-                GoogleLabel(
-                  'Sign Up with Google',
-                  () => context.read<LoginCubit>().signInWithGoogle(),
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Don\'t have an account?'),
-                    TextButton(
-                      onPressed: widget.onPageChange,
-                      child: Text(
-                        'Log in',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.blueAccent,
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
-        ),
+              )
+            : const CircularProgressIndicator(),
       );
 
   void _onEmailChange(String email) => _email = email;

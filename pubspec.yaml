@@ -29,6 +29,7 @@ dependencies:
   flutter_svg: ^1.1.6
 
   either_dart:
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

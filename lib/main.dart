@@ -7,8 +7,10 @@ import 'package:idp_chat/pages/main/main_cubit.dart';
 
 import 'pages/main/main_page.dart';
 import 'pages/splash/splash_page.dart';
+import 'pages/users/users_cubit.dart';
 import 'repository/auth_repository.dart';
 import 'repository/chat_repository.dart';
+import 'repository/user_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,7 @@ class MyApp extends StatelessWidget {
         home: MultiRepositoryProvider(
           providers: [
             RepositoryProvider.value(value: AuthRepository()),
+            RepositoryProvider.value(value: UserRepository()),
             RepositoryProvider.value(value: ChatRepository()),
           ],
           child: BlocProvider(
@@ -36,12 +39,21 @@ class MyApp extends StatelessWidget {
                 if (state.loading) {
                   return const SplashPage();
                 } else if (state.user != null) {
-                  return MainPage();
+                  return RepositoryProvider(
+                    create: (_) => context.read<UserRepository>(),
+                    child: BlocProvider(
+                      create: (_) => UsersCubit(
+                        context.read<UserRepository>(),
+                        UsersState(user: state.user!),
+                      ),
+                      child: MainPage(),
+                    ),
+                  );
                 } else {
                   return BlocProvider(
                     create: (_) => LoginCubit(
                       context.read<AuthRepository>(),
-                      context.read<ChatRepository>(),
+                      context.read<UserRepository>(),
                     ),
                     child: LoginPage(),
                   );

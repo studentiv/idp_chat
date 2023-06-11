@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:idp_chat/models/chat_user.dart';
 import 'package:idp_chat/repository/auth_repository.dart';
-import 'package:idp_chat/repository/chat_repository.dart';
+import 'package:idp_chat/repository/user_repository.dart';
 
 part 'login_cubit.freezed.dart';
 
@@ -11,7 +11,7 @@ part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
   final AuthRepository authRepository;
-  final ChatRepository chatRepository;
+  final UserRepository chatRepository;
 
   LoginCubit(this.authRepository, this.chatRepository) : super(LoginState());
 
