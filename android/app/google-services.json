@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "66663410785",
+    "firebase_url": "https://idpchat-61ade-default-rtdb.firebaseio.com",
     "project_id": "idpchat-61ade",
     "storage_bucket": "idpchat-61ade.appspot.com"
   },
@@ -14,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "66663410785-pvdrin5e4ai4i2dac9us1c1u3m6lccu3.apps.googleusercontent.com",
+          "client_id": "66663410785-o1jhrtlm05b2to0q66ra2kk9ggnu5lvk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.idp_chat",
+            "certificate_hash": "dd8e07dbda61245ccc0112b08df2ac8fac442ae5"
+          }
+        },
+        {
+          "client_id": "66663410785-33o5bfvafae7a47cfi5t2gpddpdfuvf3.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +36,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "66663410785-pvdrin5e4ai4i2dac9us1c1u3m6lccu3.apps.googleusercontent.com",
+              "client_id": "66663410785-33o5bfvafae7a47cfi5t2gpddpdfuvf3.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
